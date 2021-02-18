@@ -109,8 +109,8 @@ class _FormLoginState extends State<FormLogin> {
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       shadowColor: Colors.black,
-      child: TextField(
-          obscureText: false,
+      child: TextField(        
+          obscureText: true,
           decoration: InputDecoration(
               contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
               hintText: "Password",
