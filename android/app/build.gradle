@@ -44,7 +44,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-    apply plugin: "com.google.gms.google-services"
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

@@ -87,7 +87,7 @@ class _FormLoginState extends State<FormLogin> {
   @override
   Widget build(BuildContext context) {
     final largo = MediaQuery.of(context).size.height;
-    final ancho = MediaQuery.of(context).size.width;
+    /* final ancho = MediaQuery.of(context).size.width; */
 
     final idUserField = Material(
       elevation: 5.0,

@@ -1,11 +1,7 @@
-import 'dart:ffi';
 
-import 'dart:convert';
 
-import 'package:rw_servicios_app/src/providers/login_provider.dart';
-
-UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
-String userModelToJson(UserModel data) => json.encode(data.toJson());
+/* UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+String userModelToJson(UserModel data) => json.encode(data.toJson()); */
 
 class UserModel {
   String idUser;
@@ -16,6 +12,6 @@ class UserModel {
     this.idUser,
     this.password,
     this.occupiedBy,
-    
+
   });
 }
