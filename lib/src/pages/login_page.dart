@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-
+import 'package:rw_servicios_app/src/providers/login_provider.dart';
 
 class LoginPage extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
-    
-
-
     return Scaffold(
       body: Center(
         child: Stack(
@@ -84,8 +81,17 @@ class FormLogin extends StatefulWidget {
 }
 
 class _FormLoginState extends State<FormLogin> {
+  final myController = TextEditingController();
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final userinfo = Provider.of<LoginProvider>(context);
+
     final largo = MediaQuery.of(context).size.height;
     /* final ancho = MediaQuery.of(context).size.width; */
 
@@ -94,29 +100,32 @@ class _FormLoginState extends State<FormLogin> {
       borderRadius: BorderRadius.circular(30.0),
       shadowColor: Colors.black,
       child: TextField(
-          obscureText: false,
-          decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              hintText: "Usuario",
-              border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-
-                  borderRadius: BorderRadius.circular(32.0)))),
+        controller: myController,
+        obscureText: false,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Usuario",
+            border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(32.0))),
+        onChanged: (value) => userinfo.user = value,
+      ),
     );
 
     final password = Material(
-      
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       shadowColor: Colors.black,
-      child: TextField(        
-          obscureText: true,
-          decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              hintText: "Password",
-              border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(32.0)))),
+      child: TextField(
+        obscureText: true,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Password",
+            border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(32.0))),
+        onChanged: (value) => userinfo.password = value,
+      ),
     );
 
     final loginButon = Material(
@@ -128,29 +137,29 @@ class _FormLoginState extends State<FormLogin> {
         padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.pushReplacementNamed(context, 'home');
+          userinfo.login();
+          /* Navigator.pushReplacementNamed(context, 'home'); */
         },
         child: Text(
           "Entrar",
-          textAlign: TextAlign.center,          
+          textAlign: TextAlign.center,
           style: TextStyle(
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
               fontSize: 25.0,
               decoration: TextDecoration.none,
-              color: Colors.white
-              ),
+              color: Colors.white),
         ),
       ),
     );
 
     return Container(
-      height:largo/3,      
-      margin: EdgeInsets.fromLTRB(0, largo/2.7, 0, 0),
+      height: largo / 3,
+      margin: EdgeInsets.fromLTRB(0, largo / 2.7, 0, 0),
       color: Colors.amber,
       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0),
       child: Column(
-        children: [          
+        children: [
           Text(
             "Iniciar Sesión",
             style: TextStyle(
