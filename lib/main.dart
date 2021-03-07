@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:rw_servicios_app/src/providers/login_provider.dart';
+import 'package:rw_servicios_app/src/providers/company/company_provider.dart';
 
 import 'package:rw_servicios_app/src/routes/routes.dart';
 
@@ -17,6 +18,10 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => LoginProvider(),
           ),
+          ChangeNotifierProvider(
+            create: (context) => CompanyProvider(),
+          )
+          
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

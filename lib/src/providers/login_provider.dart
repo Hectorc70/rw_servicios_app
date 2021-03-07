@@ -10,12 +10,14 @@ import 'package:rw_servicios_app/src/models/user_model.dart';
 class LoginProvider with ChangeNotifier {
   String _user;
   String _password;
-  String _token = '62dfd379af87f103c5c94106532bf124fa073111';
+  String _token = 'd4a3822eab690e14e74739ae5dedd638c5ec4848';
 
+  int _rol;
+  String _occupiedBy;
   String _base = 'rwapi.herokuapp.com';
   String _url = '/api/user/';
 
-  Future<bool> login() async {
+  Future<bool> getDataUser() async {
     final urlUser = _base + _url;
     final queryParameters = {
       "id_user": _user,
@@ -23,17 +25,30 @@ class LoginProvider with ChangeNotifier {
 
     final uri = Uri.http(_base, _url, queryParameters);
 
-    final http.Response response = await http.get(
+    final response = await http.get(
       uri,
       headers: <String, String>{
         'Authorization': 'Token $_token',
       },
     );
 
-    /* body: {'id_user': _user, 'password': _password}, */
+    final responseDecode = jsonDecode(response.body);
+    for (int i = 0; i < responseDecode.length; i++) {
+      if (responseDecode[i]["id_user"] == _user) {
+        _rol = responseDecode[i]['rol'];
+        _occupiedBy = responseDecode[i]['occupied_by'];
+      }
+    }
 
-    print(json.decode(response.body).toString());
+    return true;
+  }
 
+  get rol {
+    return _rol;
+  }
+
+  get occupied {
+    return _occupiedBy;
   }
 
   set user(String user) {

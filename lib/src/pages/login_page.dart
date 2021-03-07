@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rw_servicios_app/src/providers/company/company_provider.dart';
 
 import 'package:rw_servicios_app/src/providers/login_provider.dart';
 
@@ -90,7 +91,8 @@ class _FormLoginState extends State<FormLogin> {
 
   @override
   Widget build(BuildContext context) {
-    final userinfo = Provider.of<LoginProvider>(context);
+    final userInfo = Provider.of<LoginProvider>(context);
+    final companyInfo = Provider.of<CompanyProvider>(context);
 
     final largo = MediaQuery.of(context).size.height;
     /* final ancho = MediaQuery.of(context).size.width; */
@@ -108,7 +110,7 @@ class _FormLoginState extends State<FormLogin> {
             border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(32.0))),
-        onChanged: (value) => userinfo.user = value,
+        onChanged: (value) => userInfo.user = value,
       ),
     );
 
@@ -124,7 +126,7 @@ class _FormLoginState extends State<FormLogin> {
             border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(32.0))),
-        onChanged: (value) => userinfo.password = value,
+        onChanged: (value) => userInfo.password = value,
       ),
     );
 
@@ -137,7 +139,18 @@ class _FormLoginState extends State<FormLogin> {
         padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          userinfo.login();
+          userInfo.getDataUser();
+          final rol = userInfo.rol;
+          final occupied = userInfo.occupied;
+
+          if (rol == 2) {
+            print('rol');
+          } else if (rol == 1) {
+            
+            companyInfo.rfcCompany = occupied;
+            Navigator.pushReplacementNamed(context, 'home-company');
+          }
+
           /* Navigator.pushReplacementNamed(context, 'home'); */
         },
         child: Text(
