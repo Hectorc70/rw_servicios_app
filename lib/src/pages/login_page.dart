@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:rw_servicios_app/src/providers/api/api_connection_provider.dart';
 import 'package:rw_servicios_app/src/providers/company/company_provider.dart';
 
 import 'package:rw_servicios_app/src/providers/login_provider.dart';
@@ -91,9 +93,10 @@ class _FormLoginState extends State<FormLogin> {
 
   @override
   Widget build(BuildContext context) {
-    final userInfo = Provider.of<LoginProvider>(context);
-    final companyInfo = Provider.of<CompanyProvider>(context);
-
+    //final userInfo = Provider.of<LoginProvider>(context);
+    //final companyInfo = Provider.of<CompanyProvider>(context);
+    final token = Provider.of<TokenProvider>(context);
+    
     final largo = MediaQuery.of(context).size.height;
     /* final ancho = MediaQuery.of(context).size.width; */
 
@@ -110,7 +113,7 @@ class _FormLoginState extends State<FormLogin> {
             border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(32.0))),
-        onChanged: (value) => userInfo.user = value,
+        onChanged: (value) => token.user = value,
       ),
     );
 
@@ -126,7 +129,7 @@ class _FormLoginState extends State<FormLogin> {
             border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(32.0))),
-        onChanged: (value) => userInfo.password = value,
+        onChanged: (value) => token.password = value,
       ),
     );
 
@@ -139,18 +142,20 @@ class _FormLoginState extends State<FormLogin> {
         padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          userInfo.getDataUser();
+          token.getToken();
+          /* final rol = userInfo.user;
+          final token = token.getToken(user, password);
+          
           final rol = userInfo.rol;
-          final occupied = userInfo.occupied;
+          final occupied = userInfo.occupied */;
 
-          if (rol == 2) {
+        /*  if (rol == 2) {
             print('rol');
           } else if (rol == 1) {
-            
             companyInfo.rfcCompany = occupied;
             Navigator.pushReplacementNamed(context, 'home-company');
           }
-
+ */
           /* Navigator.pushReplacementNamed(context, 'home'); */
         },
         child: Text(
