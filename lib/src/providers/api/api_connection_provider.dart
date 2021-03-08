@@ -19,8 +19,12 @@ class TokenProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       final responseDecode = jsonDecode(response.body);
       _tokenUser = responseDecode['token'];
-    } else {
-      _tokenUser = '';
+    } 
+    else if (response.statusCode == 400) {
+      _tokenUser = response.statusCode.toString();
+    }
+    else {
+      _tokenUser = 'Usuario o Contraseña Incorrectos';
       throw Exception(json.decode(response.body));
     }
   }

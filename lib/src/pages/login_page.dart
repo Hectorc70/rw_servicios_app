@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rw_servicios_app/src/models/user_model.dart';
 
 import 'package:rw_servicios_app/src/providers/api/api_connection_provider.dart';
 import 'package:rw_servicios_app/src/providers/company/company_provider.dart';
@@ -9,21 +10,44 @@ import 'package:rw_servicios_app/src/providers/login_provider.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Stack(
-          children: [
-            CustomPaint(
-              painter: _HeaderPaintLogin(),
-              child: Container(),
-            ),
-            logo(context),
-            FormLogin(),
-          ],
+    final colorPrincipal = Theme.of(context).primaryColor;
+    final fondo = _fondo(context);
+    /* CustomPaint(
+      painter: _HeaderPaintLogin(),
+      child: Container(),
+    ); */
+
+    final log = _logo(context);
+
+    return Stack(
+      children: [
+        fondo,
+        log,
+        SizedBox(
+          height: 100.0,
         ),
-      ),
+        FormLogin(),
+      ],
     );
   }
+}
+
+Widget _fondo(BuildContext context) {
+  final fondoG = Container(
+    height: double.infinity,
+    width: double.infinity,
+    decoration: BoxDecoration(color: Colors.white),
+  );
+  return Stack(
+
+      children: <Widget>[
+        fondoG,
+        CustomPaint(
+      painter: _HeaderPaintLogin(),
+      child: Container(),
+    ),
+      ],
+  );
 }
 
 class _HeaderPaintLogin extends CustomPainter {
@@ -45,7 +69,7 @@ class _HeaderPaintLogin extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-logo(BuildContext context) {
+Widget _logo(BuildContext context) {
   final ancho = MediaQuery.of(context).size.width;
   final largo = MediaQuery.of(context).size.height;
 
@@ -96,9 +120,10 @@ class _FormLoginState extends State<FormLogin> {
     //final userInfo = Provider.of<LoginProvider>(context);
     //final companyInfo = Provider.of<CompanyProvider>(context);
     final token = Provider.of<TokenProvider>(context);
-    
+
     final largo = MediaQuery.of(context).size.height;
-    /* final ancho = MediaQuery.of(context).size.width; */
+    final ancho = MediaQuery.of(context).size.width;
+    final colorPrincipal = Theme.of(context).primaryColor;
 
     final idUserField = Material(
       elevation: 5.0,
@@ -143,13 +168,17 @@ class _FormLoginState extends State<FormLogin> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           token.getToken();
+          final respToken = token.tokenUser;
+
+          if (respToken == '400') {}
           /* final rol = userInfo.user;
           final token = token.getToken(user, password);
           
           final rol = userInfo.rol;
-          final occupied = userInfo.occupied */;
+          final occupied = userInfo.occupied */
+          ;
 
-        /*  if (rol == 2) {
+          /*  if (rol == 2) {
             print('rol');
           } else if (rol == 1) {
             companyInfo.rfcCompany = occupied;
@@ -171,34 +200,45 @@ class _FormLoginState extends State<FormLogin> {
       ),
     );
 
-    return Container(
-      height: largo / 3,
-      margin: EdgeInsets.fromLTRB(0, largo / 2.7, 0, 0),
-      color: Colors.amber,
-      padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0),
+    return SingleChildScrollView(
       child: Column(
         children: [
-          Text(
-            "Iniciar Sesión",
-            style: TextStyle(
-                fontFamily: "Poppins",
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w600,
-                fontSize: 20.0,
-                color: Color.fromARGB(250, 57, 57, 57)),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
-          idUserField,
-          SizedBox(
-            height: 20.0,
-          ),
-          password,
-          SizedBox(
-            height: 20.0,
-          ),
-          loginButon,
+          SafeArea(
+              child: Container(
+            height: 200.0,
+          )),
+          Container(
+            width: ancho * .85,
+            margin: EdgeInsets.symmetric(vertical: 100.0),
+            padding: EdgeInsets.symmetric(vertical: 30.0),
+            
+            child: Column(
+              children: [
+                Material(child: Text(                
+                  "Iniciar Sesión",
+                  style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 24.0,
+                      color: Color.fromARGB(250, 57, 57, 57)),
+                ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                idUserField,
+                SizedBox(
+                  height: 30.0,
+                ),
+                password,
+                SizedBox(
+                  height: 30.0,
+                ),
+                loginButon,
+              ],
+            ),
+          )
         ],
       ),
     );
