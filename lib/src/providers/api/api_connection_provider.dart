@@ -9,7 +9,7 @@ class TokenProvider extends ChangeNotifier {
   String _user;
   String _password;
 
-  Future<bool> getToken() async {
+  Future<String> getToken() async {
     String _tokenURL = _base + '/api-token-auth/';
 
     final response = await http.post(_tokenURL, body: {
@@ -19,13 +19,17 @@ class TokenProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       final responseDecode = jsonDecode(response.body);
       _tokenUser = responseDecode['token'];
-    } 
-    else if (response.statusCode == 400) {
-      _tokenUser = response.statusCode.toString();
-    }
-    else {
-      _tokenUser = 'Usuario o Contraseña Incorrectos';
-      throw Exception(json.decode(response.body));
+
+      return '200';
+
+    } else if (response.statusCode == 400) {
+      _tokenUser = '';
+      return '400';
+    } else {
+      _tokenUser = '';
+      //throw Exception(json.decode(response.body));
+      return jsonDecode(response.body);
+      
     }
   }
 

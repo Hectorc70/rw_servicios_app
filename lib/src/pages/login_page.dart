@@ -39,14 +39,13 @@ Widget _fondo(BuildContext context) {
     decoration: BoxDecoration(color: Colors.white),
   );
   return Stack(
-
-      children: <Widget>[
-        fondoG,
-        CustomPaint(
-      painter: _HeaderPaintLogin(),
-      child: Container(),
-    ),
-      ],
+    children: <Widget>[
+      fondoG,
+      CustomPaint(
+        painter: _HeaderPaintLogin(),
+        child: Container(),
+      ),
+    ],
   );
 }
 
@@ -117,9 +116,10 @@ class _FormLoginState extends State<FormLogin> {
 
   @override
   Widget build(BuildContext context) {
-    //final userInfo = Provider.of<LoginProvider>(context);
-    //final companyInfo = Provider.of<CompanyProvider>(context);
+    //
+    final companyInfo = Provider.of<CompanyProvider>(context);
     final token = Provider.of<TokenProvider>(context);
+    final userInfo = Provider.of<UserProvider>(context);
 
     final largo = MediaQuery.of(context).size.height;
     final ancho = MediaQuery.of(context).size.width;
@@ -138,7 +138,10 @@ class _FormLoginState extends State<FormLogin> {
             border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(32.0))),
-        onChanged: (value) => token.user = value,
+        onChanged: (value) {
+          token.user = value;
+          userInfo.user = value;
+        },
       ),
     );
 
@@ -166,26 +169,32 @@ class _FormLoginState extends State<FormLogin> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {
-          token.getToken();
-          final respToken = token.tokenUser;
+        onPressed: () async {
+          final respuestaToken = await token.getToken();
 
-          if (respToken == '400') {}
-          /* final rol = userInfo.user;
-          final token = token.getToken(user, password);
-          
-          final rol = userInfo.rol;
-          final occupied = userInfo.occupied */
-          ;
+          if (respuestaToken.toString() == '400') {
+            _mostrarAlerta(context, 'Informacion Incorrecta',
+                'Usuario o Contraseña incorrectos');
+          } else if (respuestaToken.toString() == '200') {
+            final tokenUserG = token.tokenUser;
+            userInfo.tokenUser = tokenUserG;
 
-          /*  if (rol == 2) {
-            print('rol');
-          } else if (rol == 1) {
-            companyInfo.rfcCompany = occupied;
-            Navigator.pushReplacementNamed(context, 'home-company');
+            await userInfo.getDataUser();
+
+            final rol = userInfo.rol;
+            final occupied = userInfo.occupied;
+
+            if (rol == 2) {
+              print('rol');
+            } else if (rol == 1) {
+              companyInfo.rfcCompany = occupied;
+              companyInfo.tokenUser = tokenUserG;
+
+              Navigator.pushReplacementNamed(context, 'home-company');
+            }
+          } else {
+            _mostrarAlerta(context, 'Error', respuestaToken.toString());
           }
- */
-          /* Navigator.pushReplacementNamed(context, 'home'); */
         },
         child: Text(
           "Entrar",
@@ -211,18 +220,18 @@ class _FormLoginState extends State<FormLogin> {
             width: ancho * .85,
             margin: EdgeInsets.symmetric(vertical: 100.0),
             padding: EdgeInsets.symmetric(vertical: 30.0),
-            
             child: Column(
               children: [
-                Material(child: Text(                
-                  "Iniciar Sesión",
-                  style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 24.0,
-                      color: Color.fromARGB(250, 57, 57, 57)),
-                ),
+                Material(
+                  child: Text(
+                    "Iniciar Sesión",
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 24.0,
+                        color: Color.fromARGB(250, 57, 57, 57)),
+                  ),
                 ),
                 SizedBox(
                   height: 30.0,
@@ -244,3 +253,34 @@ class _FormLoginState extends State<FormLogin> {
     );
   }
 }
+
+void _mostrarAlerta(BuildContext context, String titleT, String descripcion) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(titleT),
+          content: Text(descripcion),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      });
+}
+
+/* 
+
+          
+           */
+
+/*  if (rol == 2) {
+            print('rol');
+          } else if (rol == 1) {
+            companyInfo.rfcCompany = occupied;
+            Navigator.pushReplacementNamed(context, 'home-company');
+          }
+ */
+/* Navigator.pushReplacementNamed(context, 'home'); */

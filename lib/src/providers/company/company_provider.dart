@@ -8,7 +8,7 @@ class CompanyProvider with ChangeNotifier {
   String _rfc;
   String _base = 'rwapi.herokuapp.com';
 
-  String _token = 'd4a3822eab690e14e74739ae5dedd638c5ec4848';
+  String _token;
 
   Future<Map> getData() async {
     final queryParameters = {
@@ -25,8 +25,6 @@ class CompanyProvider with ChangeNotifier {
     );
 
     final responseDecode = jsonDecode(response.body);
-
-    getAreas();
   }
 
   Future<Map> getAreas() async {
@@ -53,36 +51,9 @@ class CompanyProvider with ChangeNotifier {
 
     notifyListeners();
   }
-}
 
-/* class AreaProvider with ChangeNotifier {
-  String _company;
-  String _base = 'rwapi.herokuapp.com';
-
-  String _token = 'd4a3822eab690e14e74739ae5dedd638c5ec4848';
-
-  Future<Map> getData() async {
-    final queryParameters = {
-      "id_user": _company,
-    };
-
-    String _url = '/api/api-area/$_company';
-    final uri = Uri.http(_base, _url, queryParameters);
-    final response = await http.get(
-      uri,
-      headers: <String, String>{
-        'Authorization': 'Token $_token',
-      },
-    );
-
-    final responseDecode = jsonDecode(response.body);
-
-    print(responseDecode.toString());
-  }
-
-  set rfcCompany(String company) {
-    company = company;
-
+  set tokenUser(String tk) {
+    _token = tk;
     notifyListeners();
   }
-} */
+}

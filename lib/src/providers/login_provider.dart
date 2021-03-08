@@ -8,21 +8,16 @@ import 'package:rw_servicios_app/src/providers/api/api_connection_provider.dart'
 import 'package:rw_servicios_app/src/services/user_database.dart';
 import 'package:rw_servicios_app/src/models/user_model.dart';
 
-class LoginProvider with ChangeNotifier {
+class UserProvider with ChangeNotifier {
+  String _tokenUser;
   String _user;
-  String _password;
-  
-  String _token = 'd4a3822eab690e14e74739ae5dedd638c5ec4848';
-
   int _rol;
   String _occupiedBy;
   String _base = 'rwapi.herokuapp.com';
 
   Future<bool> getDataUser() async {
-    
-
     final queryParameters = {
-      "id_user": _user,
+      "id_user": '',
     };
     String _url = '/api/user/$_user';
 
@@ -31,7 +26,7 @@ class LoginProvider with ChangeNotifier {
     final response = await http.get(
       uri,
       headers: <String, String>{
-        'Authorization': 'Token $_token',
+        'Authorization': 'Token $_tokenUser',
       },
     );
 
@@ -59,8 +54,8 @@ class LoginProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set password(String password) {
-    this._password = password;
+  set tokenUser(String token) {
+    this._tokenUser = token;
 
     notifyListeners();
   }

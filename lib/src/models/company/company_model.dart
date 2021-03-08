@@ -59,8 +59,54 @@ class Company {
 }
 
 
+class Areas{
+  List<Area> items = new List();
+
+  Areas();
+
+  Areas.fromJsonLst( List<dynamic> jsonList){
+    if(jsonList == null)return;
+
+    for ( final item in jsonList){
+      final pelicula = new Area.fromJsonMap(item);
+
+      items.add(pelicula);
+    }
 
 
-class Area{
-  
+  }
+
+}
+
+class Area{  
+    String idArea;         
+    String nameArea;
+    String creationDate; 
+    String modified;      
+    String createdBy;    
+    String modifiedBy;   
+    String pathImgHeader; 
+    String company;
+
+    Area({
+      this.idArea,     
+      this.nameArea,
+      this.creationDate, 
+      this.modified,      
+      this.createdBy,    
+      this.modifiedBy,   
+      this.pathImgHeader, 
+      this.company,
+    });
+
+    Area.fromJsonMap( Map<String, dynamic> json){
+      idArea        = json['id_area'];
+      nameArea      = json['name_area'];
+      creationDate  = json['creation_date'];
+      modified      = json['modified'];
+      createdBy     = json['created_by'];
+      modifiedBy    = json['modified_by'];
+      pathImgHeader = json['path_img_header'];
+      company       = json['company'];
+    }
 }

@@ -14,10 +14,9 @@ class HomePageCompany extends StatelessWidget {
     final companyInfo = Provider.of<CompanyProvider>(context);
     final data = companyInfo.getData();
     final colorPrincipal = Theme.of(context).primaryColor;
-    
 
-    
-    
+    companyInfo.getAreas();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -41,6 +40,9 @@ class HomePageCompany extends StatelessWidget {
 }
 
 Widget _cardsAreas() {
+  final areas = new CompanyProvider();
+  areas.getAreas();
+  
   return Expanded(
     child: ListView(
       padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
@@ -83,25 +85,23 @@ Widget _calendar(BuildContext context) {
 
 Widget _bottomNavigationBar(BuildContext context) {
   return Theme(
-      data: Theme.of(context).copyWith(
+    data: Theme.of(context).copyWith(
         canvasColor: Theme.of(context).primaryColor,
         primaryColor: Colors.amber,
-        textTheme:  Theme.of(context).textTheme
-        .copyWith( caption: TextStyle( color: Colors.white))
-
-
-      ),
-      child: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bug_report_rounded),
-            label: '',
-          ),
-        ],
-      ),
-      );
+        textTheme: Theme.of(context)
+            .textTheme
+            .copyWith(caption: TextStyle(color: Colors.white))),
+    child: BottomNavigationBar(
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bug_report_rounded),
+          label: '',
+        ),
+      ],
+    ),
+  );
 }
